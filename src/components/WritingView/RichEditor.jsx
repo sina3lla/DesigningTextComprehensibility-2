@@ -15,6 +15,7 @@ export default function RichEditor({
 }) {
   const themeObj = getTheme(theme);
   const contributorSet = new Set(selectedInsight?.contributors || []);
+  const sentences = content.match(/[^.!?]+[.!?]?/g) || [];
 
   return (
     <div
@@ -77,41 +78,45 @@ export default function RichEditor({
           fontSize: '16px',
         }}
       >
-        {content.split(/\s+/).map((word, idx) => {
-          const cleaned = cleanWord(word);
-          const difficult = highlightedWords.includes(cleaned);
-          const isContributor = contributorSet.has(cleaned);
-          const isSelected = selectedWord === cleaned;
+        {sentences.map((sentence, sentenceIdx) => (
+          <div key={`sentence-${sentenceIdx}`} style={{ marginBottom: '8px' }}>
+            {sentence.trim().split(/\s+/).map((word, idx) => {
+              const cleaned = cleanWord(word);
+              const difficult = highlightedWords.includes(cleaned);
+              const isContributor = contributorSet.has(cleaned);
+              const isSelected = selectedWord === cleaned;
 
-          return (
-            <span
-              key={`${cleaned}-${idx}`}
-              onClick={() => difficult && setSelectedWord(cleaned)}
-              style={{
-                marginRight: '6px',
-                padding: '2px 4px',
-                borderRadius: '4px',
-                cursor: difficult ? 'pointer' : 'default',
-                background: isSelected
-                  ? themeObj.accent
-                  : difficult
-                  ? selectedReaderProfile === 'beginner'
-                    ? '#ffe59a'
-                    : selectedReaderProfile === 'intermediate'
-                    ? '#ffd166'
-                    : '#ffc078'
-                  : isContributor
-                  ? themeObj.accentLight
-                  : 'transparent',
-                color: isSelected ? '#fff' : themeObj.text,
-                textDecoration: isContributor ? 'underline' : 'none',
-                fontWeight: difficult ? 600 : 400,
-              }}
-            >
-              {word}
-            </span>
-          );
-        })}
+              return (
+                <span
+                  key={`${sentenceIdx}-${cleaned}-${idx}`}
+                  onClick={() => difficult && setSelectedWord(cleaned)}
+                  style={{
+                    marginRight: '6px',
+                    padding: '2px 4px',
+                    borderRadius: '4px',
+                    cursor: difficult ? 'pointer' : 'default',
+                    background: isSelected
+                      ? themeObj.accent
+                      : difficult
+                      ? selectedReaderProfile === 'beginner'
+                        ? '#ffe59a'
+                        : selectedReaderProfile === 'intermediate'
+                        ? '#ffd166'
+                        : '#ffc078'
+                      : isContributor
+                      ? themeObj.accentLight
+                      : 'transparent',
+                    color: isSelected ? '#fff' : themeObj.text,
+                    textDecoration: isContributor ? 'underline' : 'none',
+                    fontWeight: difficult ? 600 : 400,
+                  }}
+                >
+                  {word}
+                </span>
+              );
+            })}
+          </div>
+        ))}
       </div>
 
       <div

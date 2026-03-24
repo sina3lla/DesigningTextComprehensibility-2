@@ -35,11 +35,14 @@ export default function WritingView({ theme, selectedReaderProfile, setSelectedR
         padding: '20px',
         paddingTop: '80px',
         height: '100vh',
+        width: '100%',
+        boxSizing: 'border-box',
+        overflow: 'hidden',
         background: themeObj.bg,
         color: themeObj.text,
       }}
     >
-      <div style={{ flex: '1 1 68%', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ flex: '1 1 auto', minWidth: 0, display: 'flex', flexDirection: 'column' }}>
         <RichEditor
           content={editorContent}
           selectedDemo={selectedDemo}
@@ -53,7 +56,7 @@ export default function WritingView({ theme, selectedReaderProfile, setSelectedR
         />
       </div>
 
-      <div style={{ flex: '1 1 32%', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ width: 'min(360px, 32vw)', minWidth: '280px', display: 'flex', flexDirection: 'column' }}>
         <AssistantPanel
           content={editorContent}
           selectedReaderProfile={selectedReaderProfile}
