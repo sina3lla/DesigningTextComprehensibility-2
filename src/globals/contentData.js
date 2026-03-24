@@ -196,3 +196,68 @@ export const readingKaraokePassage = {
     time: { meaning: 'The ongoing sequence in which events occur.', related: ['seasons', 'cycle'] },
   },
 };
+
+export const writingDemos = {
+  A: {
+    topic: 'Water Cycle',
+    essay: 'The water cycle begins when sunlight warms lakes, rivers, and soil. Liquid water then evaporates into invisible vapor that rises through the air. As the vapor climbs higher, cooler temperatures cause condensation. Tiny droplets gather together and form clouds across the sky. Winds transport the clouds over land and sea in repeating patterns. When droplets become heavy, precipitation falls as rain, snow, or sleet. Some water infiltrates the soil and replenishes underground aquifers. Other water becomes runoff and flows into streams and rivers. Plants absorb moisture and release part of it back through transpiration. This continuous circulation supports ecosystems, agriculture, and human communities.',
+    advancedSuggestions: [
+      'Use a contrastive opener such as “Although the cycle seems simple, its feedback loops are remarkably dynamic.”',
+      'Introduce causal connectors like “consequently” and “therefore” to strengthen logical flow.',
+      'Add a synthesis sentence linking atmospheric physics with ecological outcomes.',
+    ],
+    wordInsights: {
+      evaporates: { definition: 'Changes from liquid into gas.', struggledCount: 24, contributors: ['liquid', 'vapor', 'rises'], difficulty: 1 },
+      condensation: { definition: 'The process where water vapor cools into liquid droplets.', struggledCount: 31, contributors: ['vapor', 'cooler', 'droplets'], difficulty: 1 },
+      precipitation: { definition: 'Water that falls from clouds as rain, snow, or sleet.', struggledCount: 29, contributors: ['rain', 'snow', 'sleet'], difficulty: 1 },
+      infiltrates: { definition: 'Moves gradually into a material, especially soil.', struggledCount: 42, contributors: ['soil', 'underground', 'aquifers'], difficulty: 2 },
+      aquifers: { definition: 'Underground layers of rock or sediment that store water.', struggledCount: 44, contributors: ['underground', 'replenishes', 'water'], difficulty: 2 },
+      runoff: { definition: 'Water that flows over land into rivers and streams.', struggledCount: 21, contributors: ['flows', 'streams', 'rivers'], difficulty: 2 },
+      transpiration: { definition: 'The release of water vapor from plants into the air.', struggledCount: 53, contributors: ['plants', 'moisture', 'air'], difficulty: 3 },
+      circulation: { definition: 'Continuous movement in a repeating path.', struggledCount: 26, contributors: ['continuous', 'repeating', 'supports'], difficulty: 2 },
+      ecosystems: { definition: 'Communities of organisms interacting with their environment.', struggledCount: 34, contributors: ['supports', 'agriculture', 'communities'], difficulty: 3 },
+    },
+  },
+  B: {
+    topic: 'Algorithms in Daily Life',
+    essay: 'An algorithm is a step-by-step method for solving a problem. Every morning, navigation apps calculate routes from traffic data. The software analyzes congestion and predicts travel time for each road. It then optimizes the path to reduce delays and fuel use. Recommendation systems rank movies, songs, and products from user behavior. These systems personalize choices by detecting patterns in large datasets. Behind the screen, models update continuously as new information arrives. Engineers test accuracy, fairness, and reliability before deployment. Even simple household devices now use embedded logic to automate tasks. Understanding algorithms helps people evaluate digital tools with critical thinking.',
+    advancedSuggestions: [
+      'Frame the essay with a provocative claim about hidden algorithmic governance in ordinary routines.',
+      'Use precise verbs like “prioritize,” “infer,” and “calibrate” to increase rhetorical sophistication.',
+      'Close with a nuanced caveat about transparency, bias, and accountability.',
+    ],
+    wordInsights: {
+      algorithm: { definition: 'A precise sequence of instructions to solve a task.', struggledCount: 28, contributors: ['step-by-step', 'method', 'solving'], difficulty: 1 },
+      analyzes: { definition: 'Examines details to understand structure or meaning.', struggledCount: 22, contributors: ['traffic', 'predicts', 'data'], difficulty: 1 },
+      congestion: { definition: 'A crowded condition that slows movement.', struggledCount: 25, contributors: ['traffic', 'delays', 'road'], difficulty: 2 },
+      optimizes: { definition: 'Makes something as effective or efficient as possible.', struggledCount: 39, contributors: ['reduce', 'delays', 'fuel'], difficulty: 2 },
+      recommendation: { definition: 'A suggested option generated from relevant information.', struggledCount: 19, contributors: ['rank', 'movies', 'products'], difficulty: 1 },
+      personalize: { definition: 'Tailor content to individual preferences.', struggledCount: 33, contributors: ['choices', 'user', 'patterns'], difficulty: 2 },
+      datasets: { definition: 'Organized collections of data used for analysis.', struggledCount: 37, contributors: ['patterns', 'information', 'models'], difficulty: 2 },
+      deployment: { definition: 'The stage where a system is released for real use.', struggledCount: 41, contributors: ['engineers', 'test', 'reliability'], difficulty: 3 },
+      embedded: { definition: 'Built into a larger device or system.', struggledCount: 27, contributors: ['devices', 'logic', 'automate'], difficulty: 2 },
+      accountability: { definition: 'Responsibility for decisions and their consequences.', struggledCount: 48, contributors: ['critical', 'evaluate', 'tools'], difficulty: 3 },
+    },
+  },
+  C: {
+    topic: 'Cognitive Science and Learning',
+    essay: 'Cognitive science explores how the mind processes information. Researchers combine psychology, neuroscience, linguistics, and computer science. Attention acts like a filter that selects important signals. Working memory temporarily holds ideas while people solve problems. Repetition strengthens neural pathways and supports long-term retention. Meaningful context helps learners connect new concepts to prior knowledge. Metacognition allows students to monitor and adjust their strategies. Sleep consolidates memories and improves later recall performance. Collaborative discussion can refine understanding through explanation and feedback. By studying these mechanisms, educators design instruction that improves comprehension.',
+    advancedSuggestions: [
+      'Introduce an analogy comparing attention to computational bandwidth to sharpen conceptual framing.',
+      'Use disciplinary bridging phrases such as “from a neurocognitive perspective” for academic tone.',
+      'Conclude with an implication sentence connecting theory to classroom intervention design.',
+    ],
+    wordInsights: {
+      cognitive: { definition: 'Related to thinking, knowing, and understanding.', struggledCount: 23, contributors: ['mind', 'processes', 'information'], difficulty: 1 },
+      neuroscience: { definition: 'The scientific study of the brain and nervous system.', struggledCount: 36, contributors: ['researchers', 'brain', 'science'], difficulty: 2 },
+      linguistics: { definition: 'The scientific study of language.', struggledCount: 30, contributors: ['combine', 'language', 'researchers'], difficulty: 2 },
+      attention: { definition: 'Focused mental effort on selected information.', struggledCount: 17, contributors: ['filter', 'important', 'signals'], difficulty: 1 },
+      retention: { definition: 'The ability to keep information over time.', struggledCount: 28, contributors: ['repetition', 'long-term', 'memory'], difficulty: 2 },
+      metacognition: { definition: 'Awareness and control of one’s own thinking process.', struggledCount: 49, contributors: ['monitor', 'adjust', 'strategies'], difficulty: 3 },
+      consolidates: { definition: 'Stabilizes and strengthens something after learning.', struggledCount: 38, contributors: ['sleep', 'memories', 'recall'], difficulty: 2 },
+      collaborative: { definition: 'Involving people working together.', struggledCount: 24, contributors: ['discussion', 'feedback', 'understanding'], difficulty: 1 },
+      mechanisms: { definition: 'Underlying processes that make something work.', struggledCount: 35, contributors: ['studying', 'design', 'instruction'], difficulty: 2 },
+      comprehension: { definition: 'The ability to understand meaning clearly.', struggledCount: 32, contributors: ['instruction', 'improves', 'understanding'], difficulty: 1 },
+    },
+  },
+};
