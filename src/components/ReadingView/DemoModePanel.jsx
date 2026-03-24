@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getTheme } from '../../globals/themes';
-import { demoPassage } from '../../globals/contentData';
+import { demoPassage, karaokeDemoD } from '../../globals/contentData';
+
+const cleanWord = (word) => word.toLowerCase().replace(/[^a-z]/g, '');
 
 export default function DemoModePanel({
   selectedDemo,
@@ -16,12 +18,55 @@ export default function DemoModePanel({
     advanced: 'advanced',
   };
 
+  const isDemoD = selectedDemo === 'demo_d';
   const variant = demoMap[selectedDemo];
-  const currentUnit = demoPassage.semanticUnits[currentSentenceIndex];
+  const currentUnit = !isDemoD ? demoPassage.semanticUnits[currentSentenceIndex] : null;
 
-  // Handle keyboard navigation
+  const demoDTokens = useMemo(() => {
+    if (!isDemoD) return [];
+    const built = [];
+    karaokeDemoD.lines.forEach((line, lineIndex) => {
+      line.split(/\s+/).forEach((word, indexInLine) => {
+        const clean = cleanWord(word);
+        const data = karaokeDemoD.wordData[clean];
+        built.push({
+          id: `${lineIndex}-${indexInLine}`,
+          word,
+          clean,
+          line: lineIndex,
+          indexInLine,
+          meaning: data?.meaning || `${clean} is a context word in this passage.`,
+          related: data?.related || [],
+          referential: data?.referential || null,
+        });
+      });
+    });
+    return built;
+  }, [isDemoD]);
+
+  const [demoDWordIndex, setDemoDWordIndex] = useState(0);
+  const [showWordInfo, setShowWordInfo] = useState(false);
+  const activeDemoDToken = demoDTokens[demoDWordIndex];
+  const relatedSet = useMemo(() => new Set(activeDemoDToken?.related || []), [activeDemoDToken]);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (isDemoD) {
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          setDemoDWordIndex((idx) => Math.min(idx + 1, demoDTokens.length - 1));
+          setShowWordInfo(false);
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          setDemoDWordIndex((idx) => Math.max(idx - 1, 0));
+          setShowWordInfo(false);
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          setShowWordInfo(true);
+        }
+        return;
+      }
+
       if (e.key === ' ' || e.key === 'ArrowRight') {
         e.preventDefault();
         setCurrentSentenceIndex((idx) =>
@@ -35,17 +80,117 @@ export default function DemoModePanel({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [setCurrentSentenceIndex]);
+  }, [isDemoD, demoDTokens.length, setCurrentSentenceIndex]);
 
   const demoLevelNames = {
     beginner: 'Beginner Reader (A)',
     intermediate: 'Intermediate Reader (B)',
     advanced: 'Advanced Reader (C)',
+    demo_d: 'Demo D — Biology Karaoke',
   };
+
+  if (isDemoD) {
+    const currentLine = activeDemoDToken?.line || 0;
+    const startLine = Math.max(0, currentLine - 2);
+    const endLine = Math.min(karaokeDemoD.lines.length, startLine + 5);
+
+    return (
+      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+        <div
+          style={{
+            background: `linear-gradient(135deg, ${themeObj.accentLight}40, ${themeObj.accent}20)`,
+            border: `1px solid ${themeObj.accent}`,
+            borderRadius: '8px',
+            padding: '12px',
+            marginBottom: '16px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <div style={{ fontSize: '14px', fontWeight: '600', color: themeObj.accent }}>{demoLevelNames[selectedDemo]}</div>
+          <div style={{ fontSize: '12px', color: themeObj.textSecondary }}>{demoDWordIndex + 1} / {demoDTokens.length}</div>
+        </div>
+
+        {Array.from({ length: endLine - startLine }, (_, i) => startLine + i).map((lineIdx) => {
+          const words = karaokeDemoD.lines[lineIdx].split(/\s+/);
+          return (
+            <div key={lineIdx} style={{ fontSize: '22px', lineHeight: '1.9', opacity: lineIdx === currentLine ? 1 : 0.55 }}>
+              {words.map((word, wordIdx) => {
+                const tokenIndex = demoDTokens.findIndex((t) => t.line === lineIdx && t.indexInLine === wordIdx);
+                const token = demoDTokens[tokenIndex];
+                const isFocus = tokenIndex === demoDWordIndex;
+                const isRelated = relatedSet.has(token?.clean);
+                return (
+                  <span
+                    key={`${lineIdx}-${wordIdx}`}
+                    onClick={() => {
+                      setDemoDWordIndex(tokenIndex);
+                      setShowWordInfo(true);
+                    }}
+                    style={{
+                      marginRight: '6px',
+                      padding: '2px 5px',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontWeight: isFocus ? 700 : 500,
+                      fontSize: isFocus ? '34px' : '22px',
+                      color: isFocus ? '#fff' : themeObj.text,
+                      background: isFocus ? themeObj.accent : isRelated ? themeObj.accentLight : 'transparent',
+                      textDecoration: isRelated ? 'underline' : 'none',
+                    }}
+                  >
+                    {word}
+                  </span>
+                );
+              })}
+            </div>
+          );
+        })}
+
+        {showWordInfo && activeDemoDToken && (
+          <div
+            style={{
+              marginTop: '14px',
+              background: themeObj.surface,
+              border: `1px solid ${themeObj.border}`,
+              borderRadius: '8px',
+              padding: '12px',
+              fontSize: '14px',
+              lineHeight: '1.7',
+            }}
+          >
+            <div><strong>Word:</strong> {activeDemoDToken.clean}</div>
+            <div><strong>Definition:</strong> {activeDemoDToken.meaning}</div>
+            {activeDemoDToken.referential && (
+              <div><strong>Referential relationship:</strong> {activeDemoDToken.referential}</div>
+            )}
+            {activeDemoDToken.related.length > 0 && (
+              <div><strong>Related words:</strong> {activeDemoDToken.related.join(', ')}</div>
+            )}
+          </div>
+        )}
+
+        <div
+          style={{
+            marginTop: '12px',
+            background: themeObj.surface,
+            border: `1px solid ${themeObj.border}`,
+            borderRadius: '8px',
+            padding: '12px',
+            textAlign: 'center',
+            fontSize: '12px',
+            color: themeObj.textSecondary,
+          }}
+        >
+          Use <strong>→</strong>/<strong>←</strong> to move focus one word at a time. Press <strong>↓</strong> for definition/referential info.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-      {/* Demo Header */}
       <div
         style={{
           background: `linear-gradient(135deg, ${themeObj.accentLight}40, ${themeObj.accent}20)`,
@@ -88,7 +233,6 @@ export default function DemoModePanel({
         </div>
       </div>
 
-      {/* All Sentences - Vertical Stack */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '16px' }}>
         {demoPassage.semanticUnits.map((unit, idx) => {
           const isActive = idx === currentSentenceIndex;
@@ -146,7 +290,6 @@ export default function DemoModePanel({
         })}
       </div>
 
-      {/* Navigation & Help */}
       <div
         style={{
           background: themeObj.surface,
@@ -159,29 +302,6 @@ export default function DemoModePanel({
         }}
       >
         Press <strong>Space</strong> or <strong>→</strong> to move forward. Press <strong>←</strong> to go back.
-      </div>
-
-      {/* Explanation */}
-      <div
-        style={{
-          marginTop: '16px',
-          padding: '12px',
-          background: themeObj.surface,
-          borderRadius: '8px',
-          fontSize: '12px',
-          color: themeObj.text,
-          lineHeight: '1.6',
-        }}
-      >
-        <div style={{ fontWeight: '600', marginBottom: '8px', color: themeObj.accent }}>
-          What you're seeing:
-        </div>
-        <p style={{ margin: '6px 0' }}>
-          The <strong>same underlying meaning</strong> is rendered differently based on reader knowledge level.
-        </p>
-        <p style={{ margin: '6px 0' }}>
-          Notice how word choice, sentence length, and complexity change—but the core concept stays constant.
-        </p>
       </div>
     </div>
   );

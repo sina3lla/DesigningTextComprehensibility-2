@@ -78,7 +78,7 @@ export default function ReadingView({ theme, selectedReaderProfile }) {
 
           {demoModeActive && (
             <div style={{ display: 'flex', gap: '6px' }}>
-              {['beginner', 'intermediate', 'advanced'].map((level) => (
+              {['beginner', 'intermediate', 'advanced', 'demo_d'].map((level) => (
                 <button
                   key={level}
                   onClick={() => {
@@ -98,7 +98,7 @@ export default function ReadingView({ theme, selectedReaderProfile }) {
                     transition: 'all 0.3s ease',
                   }}
                 >
-                  {level === 'beginner' ? 'A' : level === 'intermediate' ? 'B' : 'C'}
+                  {level === 'beginner' ? 'A' : level === 'intermediate' ? 'B' : level === 'advanced' ? 'C' : 'D'}
                 </button>
               ))}
             </div>
@@ -107,7 +107,7 @@ export default function ReadingView({ theme, selectedReaderProfile }) {
 
         {demoModeActive && (
           <div style={{ fontSize: '11px', color: themeObj.textSecondary }}>
-            {currentSentenceIndex + 1} / {6}
+            {selectedDemo === 'demo_d' ? 'Word mode' : `${currentSentenceIndex + 1} / 6`}
           </div>
         )}
       </div>
