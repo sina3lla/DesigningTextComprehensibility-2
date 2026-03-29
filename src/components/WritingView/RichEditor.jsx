@@ -2,6 +2,12 @@ import { getTheme } from '../../globals/themes';
 
 const cleanWord = (word) => word.toLowerCase().replace(/[^a-z]/g, '');
 
+// edited
+const isDefinedWord = (sentence, word) => {
+  const pattern = new RegExp(`\\b${word}\\s+is\\b`, 'i');
+  return pattern.test(sentence);
+};
+
 export default function RichEditor({
   content,
   selectedDemo,
@@ -86,6 +92,9 @@ export default function RichEditor({
               const isContributor = contributorSet.has(cleaned);
               const isSelected = selectedWord === cleaned;
 
+              // edited
+              const isDefined = isDefinedWord(sentence.toLowerCase(), cleaned);
+
               return (
                 <span
                   key={`${sentenceIdx}-${cleaned}-${idx}`}
@@ -95,8 +104,12 @@ export default function RichEditor({
                     padding: '2px 4px',
                     borderRadius: '4px',
                     cursor: difficult ? 'pointer' : 'default',
+
+                    // edited
                     background: isSelected
                       ? themeObj.accent
+                      : isDefined
+                      ? '#22c55e'
                       : difficult
                       ? selectedReaderProfile === 'beginner'
                         ? '#ffe59a'
@@ -106,7 +119,10 @@ export default function RichEditor({
                       : isContributor
                       ? themeObj.accentLight
                       : 'transparent',
-                    color: isSelected ? '#fff' : themeObj.text,
+
+                    // edited
+                    color: isSelected || isDefined ? '#fff' : themeObj.text,
+
                     textDecoration: isContributor ? 'underline' : 'none',
                     fontWeight: difficult ? 600 : 400,
                   }}
