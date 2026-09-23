@@ -1,4 +1,12 @@
-# React + Vite
+# UI for workable medical use LLM
+### Uni project prototype
+
+**This project aims to extend usual Interface and design projects towards an actual llm + corpus beings integrated, in 2 weeks**
+
+
+
+
+React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
